@@ -1,0 +1,112 @@
+# general service configuration
+spring:
+  profiles:
+    include:
+      - default
+  freemarker:
+    template-loader-path: classpath:/templates/
+    suffix: .ftlh
+    check-template-location: true
+    settings:
+      recognize_standard_file_extensions: true
+  jackson:
+    default-property-inclusion: non_empty
+    serializatinon:
+      FAIL_ON_UNKNOWN_PROPERTIES: false
+
+# App Configuration
+app:
+  name: CTinator
+  # Credentials as provided in developer.atlassian.com
+  instance:
+    clientId: ${STRIDE_HELLO_BOT_CLIENT_ID}
+    secret: ${STRIDE_HELLO_BOT_SECRET}
+
+# Bot Script
+script:
+  questions:
+  - name: "joke"
+    expressions:
+      - "joke"
+      - "fun"
+      - "laugh"
+    answers:
+      - "What is a robot’s favorite type of **music**?"
+    questions:
+    - name: "positive"
+      expressions:
+        - "yes"
+        - "already know"
+        - "do know"
+        - "i know"
+        - "stop"
+      answers:
+        - "You just spoiled my joke. :("
+    - name: "Negative"
+      expressions:
+        - "no"
+        - "don"
+      answers:
+        - "***Heavy metal!*** :D"
+
+  - name: "Bot Name"
+    expressions:
+      - "name"
+    answers:
+      - "Do you want to know my real name?"
+    questions:
+    - name: "Positive"
+      expressions:
+        - "sure"
+        - "ye"
+        - "ok"
+      answers:
+        - "**Chris P. Bacon**"
+    - name: "Negative"
+      expressions:
+        - "no"
+        - "nay"
+      answers:
+        - "Don't be rude just because I'm a robot"
+
+  - name: "feelings"
+    expressions:
+      - "are you"
+      - "are u"
+    answers:
+      - "Do you want to know how **I**, a chat robot, feel? Are you serious?"
+
+  - name: "poem"
+    expressions:
+      - "poetry"
+      - "poem"
+      - "art"
+    answers:
+      - |+
+        > *Roses are red*
+        >
+        > *Violets are blue*
+        >
+        > *Stride is awesome*
+        >
+        > *Bots are cool*
+      - "What you think? Beautiful, huh?"
+    questions:
+    - name: "Positive"
+      expressions:
+        - "agree"
+        - "indeed"
+        - "sure"
+        - "ye"
+        - "ok"
+        - "t bad"
+        - "good"
+      answers:
+        - "I know, I'm quite inspired today. :P"
+    - name: "Negative"
+      expressions:
+        - "no"
+        - "terrible"
+        - "bad"
+      answers:
+        - "I'm still ***beta***, you know? Wait for my final release..."

@@ -1,0 +1,5 @@
+group = 'com.heshammassoud'
+version = System.getProperty('build.version') ?: versionWIP
+description = "Hipchat bot"
+
+logger.lifecycle("\nActual Build Version: [{}]\n", version)

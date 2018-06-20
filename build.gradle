@@ -1,0 +1,27 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.0.2.RELEASE")
+    }
+}
+
+plugins {
+    id 'com.adarshr.test-logger' version '1.1.2'
+}
+
+apply from: "$rootDir/gradle-scripts/plugins.gradle"
+apply from: "$rootDir/gradle-scripts/extensions.gradle"
+apply from: "$rootDir/gradle-scripts/project-info.gradle"
+apply from: "$rootDir/gradle-scripts/java-compile.gradle"
+apply from: "$rootDir/gradle-scripts/repositories.gradle"
+apply from: "$rootDir/gradle-scripts/integration-tests.gradle"
+apply from: "$rootDir/gradle-scripts/test-logger.gradle"
+apply from: "$rootDir/gradle-scripts/dependencies.gradle"
+apply from: "$rootDir/gradle-scripts/checkstyle.gradle"
+apply from: "$rootDir/gradle-scripts/pmd.gradle"
+apply from: "$rootDir/gradle-scripts/jacoco.gradle"
+apply from: "$rootDir/gradle-scripts/findbugs.gradle"
+apply from: "$rootDir/gradle-scripts/execution-order.gradle"
+
