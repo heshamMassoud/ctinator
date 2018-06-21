@@ -16,31 +16,38 @@
 </head>
 <body>
 <form action="/save-configuration" method="post" class="aui">
-    <div class="ak-field__width-large">
-        ${(productName)!}
+    <div class="ak-field-group">
+        <h1>${(productName)!}</h1>
     </div>
     <br>
-    <a class="ak-button__appearance-link" href="${(playgroundUrl)!}">View on Playground</a>
-    <a class="ak-button__appearance-link" href="${(mcUrl)!}">View on Merchant Center</a>
-    <div>
-        <label for="projectKey">Project Key</label>
-        <input class="ak-field-text ak-field__size-medium" placeholder="Project Key" type="text" name="projectKey"
-               id="projectKey" value="${(ctProjectCredentials.projectKey)!}"
-               required autofocus/>
+    <a class="ak-button__appearance-link" href="${(playgroundUrl)!}">Playground</a> |
+    <a class="ak-button__appearance-link" href="${(mcUrl)!}">Merchant Center</a> |
+    <button class="ak-button__appearance-default">Unpublish</button>
+
+    <div class="ak-field-group" >
+        <img width="20%" src="https://img.rewe-static.de/1910439/25946143_digital-image.png?resize=1320px:1320px&output-quality=90&output-format=image/webp&background-color=FFFFFF"
+             />
     </div>
+
     <div class="ak-field-group">
-        <label for="clientId">Client Id</label>
-        <input class="ak-field-text ak-field__size-medium" placeholder="Client Id" type="text" name="clientId"
-               id="clientId" value="${(ctProjectCredentials.clientId)!}"
-               required autofocus/>
+        <label for="desc">Description</label>
+        <textarea class="ak-field-textarea" name="desc" id="desc" required autofocus>${(desc)!}</textarea>
     </div>
+
     <div class="ak-field-group">
-        <label for="clientSecret">Client Secret</label>
-        <input class="ak-field-text ak-field__size-medium" placeholder="Client Secret" type="text" name="clientSecret"
-               id="clientSecret"
-               value="${(ctProjectCredentials.clientSecret)!}" required autofocus/>
+        <label for="vars">Variants</label>
+        <table>
+            <tr>
+                <td><a class="ak-button__appearance-link" href="${(playgroundUrl)!}">Master Variant: Size 160g</a></td>
+            </tr>
+            <tr>
+                <td><a class="ak-button__appearance-link" href="${(playgroundUrl)!}">Variant 1: Size 200g</a></td>
+            </tr>
+            <tr>
+                <td><a class="ak-button__appearance-link" href="${(playgroundUrl)!}">Variant 2: Size 200g</a></td>
+            </tr>
+        </table>
     </div>
-    </fieldset>
 </form>
 </body>
 </html>

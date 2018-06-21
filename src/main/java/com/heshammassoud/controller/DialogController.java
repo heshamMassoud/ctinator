@@ -37,6 +37,9 @@ public class DialogController {
         model.addAttribute("playgroundUrl",
             "https://impex.commercetools.com/playground?endpoint=products&method=read-id&resourceId="
                 + id);
+        model.addAttribute("desc", "Full LED headlights produce light at 5,500 Kelvin, that's"
+            + " roughly the same as daylight. This could help your eyes perceive more contrast. They experience less "
+            + "strain. And those dark stretches of road become a little less daunting.");
         return "productdialog";
     }
 
