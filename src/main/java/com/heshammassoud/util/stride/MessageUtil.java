@@ -85,7 +85,7 @@ public final class MessageUtil {
         return Document.create()
                        .paragraph(p -> p
                            .text("Here is the product you requested:")
-                           .text(productName, actionMark);
+                           .text(productName, actionMark));
     }
 
 
