@@ -32,6 +32,8 @@ public class SyncController {
     /**
      * Whenever the sync option in the main menu is chosen, this controller is called.
      *
+     * <p>NOTE: This is will not be used for the POC.
+     *
      * @param actionTargetRequest the payload sent from the action.
      */
     @AuthorizeJwtHeader
