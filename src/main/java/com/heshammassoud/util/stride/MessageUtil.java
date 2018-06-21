@@ -7,6 +7,7 @@ import com.heshammassoud.models.stride.ActionGroupAction;
 import com.heshammassoud.models.stride.InlineExtension;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,12 +26,7 @@ public final class MessageUtil {
      * @return a built main menu {@link Document} with a custom header.
      */
     @Nonnull
-    public static Document getMainMenuReply(@Nonnull final String message, @Nonnull final UserDetail userDetail) {
-
-        final String userDisplayName = userDetail.getDisplayName();
-        String header;
-
-
+    public static Document getMainMenuReply(@Nonnull final String message, @Nullable final UserDetail userDetail) {
         final String patternString = "(show|view).*(product.*)";
         final Pattern pattern = Pattern.compile(patternString);
         final Matcher matcher = pattern.matcher(message);
@@ -38,14 +34,19 @@ public final class MessageUtil {
             return referenceDocument();
         }
 
-
-        if (message.toLowerCase().contains("hi ")) {
-            header = format("Hi %s, hope you are having a great day! What can I do for you?", userDisplayName);
-        } else {
-            header = (format("Hi %s, sorry I didn't get that. However, can I help you with one of these things?",
-                userDisplayName));
+        if (userDetail != null) {
+            String header;
+            final String userDisplayName = userDetail.getDisplayName();
+            if (message.toLowerCase().contains("hi ")) {
+                header = format("Hi %s, hope you are having a great day! What can I do for you?", userDisplayName);
+            } else {
+                header = (format("Hi %s, sorry I didn't get that. However, can I help you with one of these things?",
+                    userDisplayName));
+            }
+            return mainMenu(header);
         }
-        return mainMenu(header);
+
+        return noIdea();
     }
 
     /**
@@ -194,6 +195,19 @@ public final class MessageUtil {
                                                        .icon("https://ecosystem.atlassian.net/secure/"
                                                            + "viewavatar?size=xsmall&avatarId="
                                                            + "15318&avatarType=issuetype", "Task")));
+    }
+
+    /**
+     * A reference menu to use stuff from.
+     *
+     * @return a built reference menu.
+     */
+    @Nonnull
+    private static Document noIdea() {
+        return Document.create()
+                       .paragraph(p -> p
+                           .text(
+                               "Sorry, I don't understand that.. :("));
     }
 
 
