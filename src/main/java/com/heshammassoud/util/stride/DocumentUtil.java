@@ -1,6 +1,8 @@
 package com.heshammassoud.util.stride;
 
 import com.atlassian.adf.inline.Mark;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.heshammassoud.models.stride.ActionTarget;
 
 import javax.annotation.Nonnull;
@@ -17,9 +19,15 @@ public final class DocumentUtil {
      * @return the  {@link Mark} of type action.
      */
     @Nonnull
-    public static Mark createActionMark(@Nonnull final String title, @Nonnull final String targetKey) {
+    public static Mark createActionMark(@Nonnull final String title, @Nonnull final String targetKey,
+                                        @Nonnull final String productId) {
+        final ObjectNode parameters = JsonNodeFactory.instance.objectNode();
+        parameters.put("id", productId);
+
+
         return Mark.mark("action")
                    .attribute("title", title)
-                   .anyAttribute("target", new ActionTarget(targetKey));
+                   .anyAttribute("target", new ActionTarget(targetKey))
+                   .anyAttribute("parameters", parameters);
     }
 }

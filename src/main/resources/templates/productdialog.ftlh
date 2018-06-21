@@ -16,7 +16,13 @@
 </head>
 <body>
 <form action="/save-configuration" method="post" class="aui">
-    <div class="ak-field-group">
+    <div class="ak-field__width-large">
+        ${(productName)!}
+    </div>
+    <br>
+    <a class="ak-field-url" href="${(playgroundUrl)!}">View on Playground</a>
+    <a class="ak-field-url" href="${(mcUrl)!}">View on Merchant Center</a>
+    <div>
         <label for="projectKey">Project Key</label>
         <input class="ak-field-text ak-field__size-medium" placeholder="Project Key" type="text" name="projectKey"
                id="projectKey" value="${(ctProjectCredentials.projectKey)!}"
@@ -34,20 +40,6 @@
                id="clientSecret"
                value="${(ctProjectCredentials.clientSecret)!}" required autofocus/>
     </div>
-    <fieldset class="ak-field-group">
-        <legend><span>Notification options</span></legend>
-        <div class="ak-field-radio">
-            <input type="radio" name="option" id="option1" value="option1">
-            <label for="option1">Send a notification every time a new object is created</label>
-        </div>
-        <div class="ak-field-radio">
-            <input type="radio" name="option" id="option2" value="option2">
-            <label for="option2">Send a daily digest</label>
-        </div>
-        <div class="ak-field-radio">
-            <input type="radio" name="option" id="option3" value="option3">
-            <label for="option3">No notifications, kthxbye</label>
-        </div>
     </fieldset>
 </form>
 </body>

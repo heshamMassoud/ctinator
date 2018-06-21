@@ -40,7 +40,7 @@ public final class MessageUtil {
      * @return the PDP as a Stride document object.
      */
     public static Document pdpDocument(@Nonnull final Product product) {
-        final Mark actionMark = createActionMark("product-action-mark", "product-dialog");
+        final Mark actionMark = createActionMark("product-action-mark", "product-dialog", product.getId());
 
         final String productName = product.getMasterData().getCurrent().getName().get(ENGLISH);
 
