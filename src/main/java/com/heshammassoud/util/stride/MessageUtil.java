@@ -78,12 +78,14 @@ public final class MessageUtil {
         final String[] strings = productMessage.split(" ");
         final String uuid = strings[strings.length - 1];
 
-        final Mark actionMark = createActionMark("Product Name", "product-dialog");
+        final Mark actionMark = createActionMark("product-action-mark", "product-dialog");
+
+        final String productName = "Black Pullover";
 
         return Document.create()
                        .paragraph(p -> p
-                           .text(
-                               format("Here is your product with id: %s", uuid), actionMark));
+                           .text("Here is the product you requested:")
+                           .text(productName, actionMark);
     }
 
 
