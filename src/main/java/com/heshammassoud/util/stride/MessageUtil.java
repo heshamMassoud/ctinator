@@ -7,6 +7,8 @@ import com.heshammassoud.models.stride.ActionGroupAction;
 import com.heshammassoud.models.stride.InlineExtension;
 
 import javax.annotation.Nonnull;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.heshammassoud.models.stride.InlineExtension.ofActionGroup;
 import static java.lang.String.format;
@@ -26,6 +28,16 @@ public final class MessageUtil {
 
         final String userDisplayName = userDetail.getDisplayName();
         String header;
+
+
+        final String patternString = "(show|view).*(product.*)";
+        final Pattern pattern = Pattern.compile(patternString);
+        final Matcher matcher = pattern.matcher(message);
+        if(matcher.matches()) {
+            return referenceDocument();
+        }
+
+
         if (message.toLowerCase().contains("hi ")) {
             header = format("Hi %s, hope you are having a great day! What can I do for you?", userDisplayName);
         } else {
@@ -137,10 +149,10 @@ public final class MessageUtil {
      * @return a built reference menu.
      */
     @Nonnull
-    private Document referenceDocument() {
+    private static Document referenceDocument() {
         return Document.create()
                        .paragraph(p -> p
-                               .text("Here is some ")
+                               .text("In the future (when I am smarter) I would be asking you for the product Id or key in commercetools, but now I will just show you some random stuff..")
                                .strong("bold test")
                                .text(" and ")
                                .em("text in italics")
