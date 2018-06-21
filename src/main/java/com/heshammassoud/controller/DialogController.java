@@ -1,7 +1,6 @@
 package com.heshammassoud.controller;
 
 
-import com.atlassian.stride.spring.auth.AuthorizeJwtParameter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +20,6 @@ public class DialogController {
      *
      * @return a {@link ModelAndView} containing the appName and the serviceConfig.
      */
-    @AuthorizeJwtParameter
     @GetMapping({"/productdialog", "/productdialog/"})
     public String renderDialogView(@Nonnull final Model model) {
         model.addAttribute("msg", "A message from the controller");
