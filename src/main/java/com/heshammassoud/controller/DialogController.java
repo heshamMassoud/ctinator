@@ -28,7 +28,9 @@ public class DialogController {
      * @return a {@link ModelAndView} containing the appName and the serviceConfig.
      */
     @GetMapping( {"/productdialog/", "/productdialog"})
-    public String renderDialogView(@RequestParam("id") final String id, @Nonnull final Model model) {
+    public String renderDialogView(@RequestParam("id") final String id,
+                                   @RequestParam("gwt") final String gwt,
+                                   @Nonnull final Model model) {
 
         final Product product = productService.getProductById(id).join();
         model.addAttribute("productName", product.getMasterData().getCurrent().getName().get(ENGLISH));
