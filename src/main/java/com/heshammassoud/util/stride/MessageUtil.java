@@ -27,7 +27,7 @@ public final class MessageUtil {
      */
     @Nonnull
     public static Document getMainMenuReply(@Nonnull final String message, @Nullable final UserDetail userDetail) {
-        final String patternString = "(show|view).*(product.*)";
+        final String patternString = ".*(show|view).*(product.*)";
         final Pattern pattern = Pattern.compile(patternString);
         final Matcher matcher = pattern.matcher(message);
         if (matcher.matches()) {
