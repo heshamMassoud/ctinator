@@ -72,7 +72,7 @@ public final class MessageUtil {
      * @return true if it is in UUID format, otherwise false.
      */
     private static boolean isUuid(@Nonnull final String id) {
-        final String uuidRegex = "[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}";
+        final String uuidRegex = ".*[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}";
         final Pattern regexPattern = Pattern.compile(uuidRegex);
         return regexPattern.matcher(id).matches();
     }
