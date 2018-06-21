@@ -1,14 +1,11 @@
 package com.heshammassoud.controller;
 
 
-import com.atlassian.stride.spring.auth.AuthorizeJwtHeader;
-import com.atlassian.stride.spring.auth.AuthorizeJwtParameter;
 import com.heshammassoud.service.commercetools.ProductService;
 import io.sphere.sdk.products.Product;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Nonnull;
@@ -29,12 +26,10 @@ public class DialogController {
      *
      * @return a {@link ModelAndView} containing the appName and the serviceConfig.
      */
-    @AuthorizeJwtHeader
-    @AuthorizeJwtParameter
     @GetMapping( {"/productdialog/", "/productdialog"})
-    public String renderDialogView(@RequestParam("id") final String id,
-                                   @Nonnull final Model model) {
+    public String renderDialogView(@Nonnull final Model model) {
 
+        final String id = "195e1c96-c840-4f92-85c8-5f15f62067f8";
         final Product product = productService.getProductById(id).join();
         model.addAttribute("productName", product.getMasterData().getCurrent().getName().get(ENGLISH));
         model.addAttribute("mcUrl",
