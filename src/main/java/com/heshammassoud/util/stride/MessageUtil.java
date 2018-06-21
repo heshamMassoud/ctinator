@@ -26,12 +26,21 @@ public final class MessageUtil {
      * @return a built main menu {@link Document} with a custom header.
      */
     @Nonnull
-    public static Document getMainMenuReply(@Nonnull final String message, @Nullable final UserDetail userDetail) {
-        final String patternString = ".*(show|view).*(product.*)";
+    public static Document getReply(@Nonnull final String message, @Nullable final UserDetail userDetail) {
+
+
+        // If the user asks to show a product.
+        final String patternString = ".*(show|view|display).*(product.*)";
         final Pattern pattern = Pattern.compile(patternString);
         final Matcher matcher = pattern.matcher(message);
         if (matcher.matches()) {
             return referenceDocument();
+        }
+
+        // If the user gives the uuid or key of a product.
+        if (isUuid(message)) {
+            // Display product dialog
+            return pdpDocument();
         }
 
         if (userDetail != null) {
@@ -47,6 +56,25 @@ public final class MessageUtil {
         }
 
         return noIdea();
+    }
+
+    private static Document pdpDocument() {
+        return Document.create()
+                       .paragraph(p -> p
+                           .text(
+                               "Opening now a dialogue containing the product detail page..."));
+    }
+
+    /**
+     * Given an id as {@link String}, this method checks whether if it is in UUID format or not.
+     *
+     * @param id to check if it is in UUID format.
+     * @return true if it is in UUID format, otherwise false.
+     */
+    private static boolean isUuid(@Nonnull final String id) {
+        final String uuidRegex = "[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}";
+        final Pattern regexPattern = Pattern.compile(uuidRegex);
+        return regexPattern.matcher(id).matches();
     }
 
     /**

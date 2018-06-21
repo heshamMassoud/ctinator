@@ -10,7 +10,7 @@ import javax.annotation.Nonnull;
 
 import static com.heshammassoud.util.stride.ContextUtil.toConversationContext;
 import static com.heshammassoud.util.stride.ContextUtil.toUserContext;
-import static com.heshammassoud.util.stride.MessageUtil.getMainMenuReply;
+import static com.heshammassoud.util.stride.MessageUtil.getReply;
 import static com.heshammassoud.util.stride.MessageUtil.mainMenu;
 import static java.lang.String.format;
 
@@ -45,7 +45,7 @@ public class ReplierService {
                                displayName))) // 2. build reply.
                        .thenCompose(reply -> messageService.sendPrivately(userContext, reply)); // 3. send message.
         } else {
-            messageService.send(conversationContext, getMainMenuReply(messageContent, null));
+            messageService.send(conversationContext, getReply(messageContent, null));
         }
 
 
