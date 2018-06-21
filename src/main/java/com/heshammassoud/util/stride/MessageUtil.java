@@ -2,6 +2,7 @@ package com.heshammassoud.util.stride;
 
 import com.atlassian.adf.Document;
 import com.atlassian.adf.block.codeblock.Language;
+import com.atlassian.adf.inline.Mark;
 import com.atlassian.stride.api.model.UserDetail;
 import com.heshammassoud.models.stride.ActionGroupAction;
 import com.heshammassoud.models.stride.InlineExtension;
@@ -12,6 +13,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.heshammassoud.models.stride.InlineExtension.ofActionGroup;
+import static com.heshammassoud.util.stride.DocumentUtil.createActionMark;
 import static java.lang.String.format;
 import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonList;
@@ -76,10 +78,12 @@ public final class MessageUtil {
         final String[] strings = productMessage.split(" ");
         final String uuid = strings[strings.length - 1];
 
+        final Mark actionMark = createActionMark("Product Name", "product-dialog");
+
         return Document.create()
                        .paragraph(p -> p
                            .text(
-                               format("Opening now a dialogue containing information for product with id: %s", uuid)));
+                               format("Here is your product with id: %s", uuid), actionMark));
     }
 
 
