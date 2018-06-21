@@ -80,7 +80,7 @@ public final class MessageUtil {
 
         final Mark actionMark = createActionMark("product-action-mark", "product-dialog");
 
-        final String productName = "Black Pullover";
+        final String productName = "Black Pullover" + uuid;
 
         return Document.create()
                        .paragraph(p -> p
