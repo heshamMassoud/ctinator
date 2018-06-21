@@ -63,8 +63,9 @@ public class DeleteController {
     public ActionResponse products(@RequestBody @Nonnull final ActionTargetRequest actionTargetRequest) {
 
         final Document replyMessage = productService.getTotalProducts()
-                                                    .thenApply(totalNumberOfProducts ->
-                                                            confirmProductsDelete(System.getenv("PROJECT_KEY"), 3000)).join();
+                                                    .thenApply(totalNumberOfProducts -> System.getenv("PROJECT_KEY"))
+                                                    .thenApply(projectKey -> confirmProductsDelete(projectKey, 3000))
+                                                    .join();
 
         messageService.sendPrivately(actionTargetRequest.getContext(), replyMessage);
 
@@ -84,20 +85,20 @@ public class DeleteController {
 
         LOGGER.info("Got products-delete-yes callback with payload {}", actionTargetRequest.toString());
         messageService.sendPrivately(actionTargetRequest.getContext(),
-                mainMenu("Deleting products from  \"project-x-key\" ..... Fasten your seat belt, "
-                        + "this may take some time. Deleted 230/3000. "));
+            mainMenu("Deleting products from  \"project-x-key\" ..... Fasten your seat belt, "
+                + "this may take some time. Deleted 230/3000. "));
 
         productService.deleteAllProducts()
                       .thenCompose(aVoid ->
-                              messageService.sendPrivately(actionTargetRequest.getContext(),
-                                      mainMenu("Deleting products from  \"project-x-key\"..... "
-                                              + "Fasten your seat belt, this may take some time..")))
+                          messageService.sendPrivately(actionTargetRequest.getContext(),
+                              mainMenu("Deleting products from  \"project-x-key\"..... "
+                                  + "Fasten your seat belt, this may take some time..")))
                       .thenCompose(response -> messageService.sendPrivately(actionTargetRequest.getContext(),
-                              Document.fromMarkdown("Products deleted Successfully! @gif success!")))
+                          Document.fromMarkdown("Products deleted Successfully! @gif success!")))
                       .exceptionally(throwable -> {
                           messageService.sendPrivately(actionTargetRequest.getContext(),
-                                  Document.fromMarkdown("Sorry, I couldn't delete all the products. @gif sad"
-                                          + throwable.getMessage()));
+                              Document.fromMarkdown("Sorry, I couldn't delete all the products. @gif sad"
+                                  + throwable.getMessage()));
                           return null;
                       });
         return ActionResponse.of();
@@ -116,7 +117,7 @@ public class DeleteController {
 
         LOGGER.info("Got products-delete-no callback with payload {}", actionTargetRequest.toString());
         messageService.sendPrivately(actionTargetRequest.getContext(),
-                mainMenu("It seems that you are not ready yet for that. Anything else I can do for you?"));
+            mainMenu("It seems that you are not ready yet for that. Anything else I can do for you?"));
         return ActionResponse.of();
     }
 
