@@ -6,6 +6,7 @@ import io.sphere.sdk.products.Product;
 import io.sphere.sdk.products.commands.ProductDeleteCommand;
 import io.sphere.sdk.products.commands.ProductUpdateCommand;
 import io.sphere.sdk.products.commands.updateactions.Unpublish;
+import io.sphere.sdk.products.queries.ProductByIdGet;
 import io.sphere.sdk.products.queries.ProductQuery;
 import io.sphere.sdk.queries.PagedQueryResult;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,15 @@ public class ProductService {
     public CompletableFuture<Long> getTotalProducts() {
         return sphereClient.execute(ProductQuery.of())
                            .thenApply(PagedQueryResult::getTotal)
+                           .toCompletableFuture();
+    }
+
+    /**
+     * Gets a future containing the total number of products.
+     */
+    @Nonnull
+    public CompletableFuture<Product> getProductById(@Nonnull final String productId) {
+        return sphereClient.execute(ProductByIdGet.of(productId))
                            .toCompletableFuture();
     }
 

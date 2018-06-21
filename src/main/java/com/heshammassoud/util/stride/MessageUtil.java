@@ -3,13 +3,11 @@ package com.heshammassoud.util.stride;
 import com.atlassian.adf.Document;
 import com.atlassian.adf.block.codeblock.Language;
 import com.atlassian.adf.inline.Mark;
-import com.atlassian.stride.api.model.UserDetail;
 import com.heshammassoud.models.stride.ActionGroupAction;
 import com.heshammassoud.models.stride.InlineExtension;
+import io.sphere.sdk.products.Product;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.heshammassoud.models.stride.InlineExtension.ofActionGroup;
@@ -17,50 +15,11 @@ import static com.heshammassoud.util.stride.DocumentUtil.createActionMark;
 import static java.lang.String.format;
 import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonList;
+import static java.util.Locale.ENGLISH;
 
 public final class MessageUtil {
 
     private static final String UUID_REGEX = "[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}";
-
-    /**
-     * Builds the bot's main menu with a custom header according to the user's initial message to the bot.
-     *
-     * @param message    the initial message sent by the user.
-     * @param userDetail the details of the user to receive the reply.
-     * @return a built main menu {@link Document} with a custom header.
-     */
-    @Nonnull
-    public static Document getReply(@Nonnull final String message, @Nullable final UserDetail userDetail) {
-
-
-        // If the user asks to show a product.
-        final String patternString = ".*(show|view|display).*(product.*)";
-        final Pattern pattern = Pattern.compile(patternString);
-        final Matcher matcher = pattern.matcher(message);
-        if (matcher.matches()) {
-            return referenceDocument();
-        }
-
-        // If the user gives the uuid or key of a product.
-        if (isViewWithUuid(message)) {
-            // Display product dialog
-            return pdpDocument(message);
-        }
-
-        if (userDetail != null) {
-            String header;
-            final String userDisplayName = userDetail.getDisplayName();
-            if (message.toLowerCase().contains("hi ")) {
-                header = format("Hi %s, hope you are having a great day! What can I do for you?", userDisplayName);
-            } else {
-                header = (format("Hi %s, sorry I didn't get that. However, can I help you with one of these things?",
-                    userDisplayName));
-            }
-            return mainMenu(header);
-        }
-
-        return noIdea();
-    }
 
     /**
      * Given an id as {@link String}, this method checks whether if it is in UUID format or not.
@@ -68,19 +27,22 @@ public final class MessageUtil {
      * @param id to check if it is in UUID format.
      * @return true if it is in UUID format, otherwise false.
      */
-    private static boolean isViewWithUuid(@Nonnull final String id) {
+    public static boolean isViewWithUuid(@Nonnull final String id) {
         final String uuidRegex = ".*(view|show|display)*(product|.)*" + UUID_REGEX;
         final Pattern regexPattern = Pattern.compile(uuidRegex);
         return regexPattern.matcher(id).matches();
     }
 
-    private static Document pdpDocument(@Nonnull final String productMessage) {
-        final String[] strings = productMessage.split(" ");
-        final String uuid = strings[strings.length - 1];
-
+    /**
+     * Builds a pdp for the given product.
+     *
+     * @param product the product to display a pdp for.
+     * @return the PDP as a Stride document object.
+     */
+    public static Document pdpDocument(@Nonnull final Product product) {
         final Mark actionMark = createActionMark("product-action-mark", "product-dialog");
 
-        final String productName = "Black Pullover" + uuid;
+        final String productName = product.getMasterData().getCurrent().getName().get(ENGLISH);
 
         return Document.create()
                        .paragraph(p -> p
@@ -195,7 +157,7 @@ public final class MessageUtil {
      * @return a built reference menu.
      */
     @Nonnull
-    private static Document referenceDocument() {
+    public static Document referenceDocument() {
         return Document.create()
                        .paragraph(p -> p
                            .text(
@@ -244,7 +206,7 @@ public final class MessageUtil {
      * @return a built reference menu.
      */
     @Nonnull
-    private static Document noIdea() {
+    public static Document noIdea() {
         return Document.create()
                        .paragraph(p -> p
                            .text(
