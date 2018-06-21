@@ -50,6 +50,34 @@
       },
       "url": "/configuration",
       "authentication": "jwt"
+      },
+      {
+        "key": "product-dialog",
+        "title": {
+          "value": "Love message"
+        },
+        "options": {
+          "size": {
+            "width": "650px",
+            "height": "400px"
+          },
+          "primaryAction":  {
+            "key": "action-pin",
+            "name": {
+              "value": "Save ❤"
+            }
+          },
+          "secondaryActions": [
+            {
+              "key": "action-close",
+              "name": {
+                "value": "Close"
+              }
+            }
+          ]
+        },
+        "url": "/productdialog",
+        "authentication": "jwt"
       }
     ],
     "chat:actionTarget" : [
