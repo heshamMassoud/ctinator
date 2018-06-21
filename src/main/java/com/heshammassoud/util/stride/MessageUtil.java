@@ -18,6 +18,8 @@ import static java.util.Collections.singletonList;
 
 public final class MessageUtil {
 
+    private static final String UUID_REGEX = "[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}";
+
     /**
      * Builds the bot's main menu with a custom header according to the user's initial message to the bot.
      *
@@ -38,9 +40,9 @@ public final class MessageUtil {
         }
 
         // If the user gives the uuid or key of a product.
-        if (isUuid(message)) {
+        if (isViewWithUuid(message)) {
             // Display product dialog
-            return pdpDocument();
+            return pdpDocument(message);
         }
 
         if (userDetail != null) {
@@ -58,24 +60,29 @@ public final class MessageUtil {
         return noIdea();
     }
 
-    private static Document pdpDocument() {
-        return Document.create()
-                       .paragraph(p -> p
-                           .text(
-                               "Opening now a dialogue containing the product detail page..."));
-    }
-
     /**
      * Given an id as {@link String}, this method checks whether if it is in UUID format or not.
      *
      * @param id to check if it is in UUID format.
      * @return true if it is in UUID format, otherwise false.
      */
-    private static boolean isUuid(@Nonnull final String id) {
-        final String uuidRegex = ".*[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}";
+    private static boolean isViewWithUuid(@Nonnull final String id) {
+        final String uuidRegex = ".*(view|show|display)*(product|.)*" + UUID_REGEX;
         final Pattern regexPattern = Pattern.compile(uuidRegex);
         return regexPattern.matcher(id).matches();
     }
+
+    private static Document pdpDocument(@Nonnull final String productMessage) {
+        final String[] strings = productMessage.split(" ");
+        final String uuid = strings[strings.length - 1];
+
+        return Document.create()
+                       .paragraph(p -> p
+                           .text(
+                               format("Opening now a dialogue containing information for product with id: %s", uuid)));
+    }
+
+
 
     /**
      * Builds the bot's main menu with a custom header.
