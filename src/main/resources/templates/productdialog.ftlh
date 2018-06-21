@@ -20,8 +20,8 @@
         ${(productName)!}
     </div>
     <br>
-    <a class="ak-field-url" href="${(playgroundUrl)!}">View on Playground</a>
-    <a class="ak-field-url" href="${(mcUrl)!}">View on Merchant Center</a>
+    <a class="ak-button__appearance-link" href="${(playgroundUrl)!}">View on Playground</a>
+    <a class="ak-button__appearance-link" href="${(mcUrl)!}">View on Merchant Center</a>
     <div>
         <label for="projectKey">Project Key</label>
         <input class="ak-field-text ak-field__size-medium" placeholder="Project Key" type="text" name="projectKey"
