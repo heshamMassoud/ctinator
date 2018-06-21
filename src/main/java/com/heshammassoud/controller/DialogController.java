@@ -27,7 +27,7 @@ public class DialogController {
      *
      * @return a {@link ModelAndView} containing the appName and the serviceConfig.
      */
-    @GetMapping( {"/productdialog/{id}/", "/productdialog/{id}"})
+    @GetMapping( {"/productdialog/", "/productdialog"})
     public String renderDialogView(@RequestParam("id") final String id, @Nonnull final Model model) {
 
         final Product product = productService.getProductById(id).join();
