@@ -16,7 +16,7 @@ spring:
 
 # App Configuration
 app:
-  name: CTinator
+  name: ctinator
   # Credentials as provided in developer.atlassian.com
   instance:
     clientId: ${STRIDE_HELLO_BOT_CLIENT_ID}
