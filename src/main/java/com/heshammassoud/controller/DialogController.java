@@ -1,7 +1,7 @@
 package com.heshammassoud.controller;
 
 
-import com.atlassian.stride.spring.auth.AuthorizeJwtParameter;
+import com.atlassian.stride.spring.auth.AuthorizeJwtHeader;
 import com.heshammassoud.service.commercetools.ProductService;
 import io.sphere.sdk.products.Product;
 import org.springframework.stereotype.Controller;
@@ -28,7 +28,7 @@ public class DialogController {
      *
      * @return a {@link ModelAndView} containing the appName and the serviceConfig.
      */
-    @AuthorizeJwtParameter
+    @AuthorizeJwtHeader
     @GetMapping( {"/productdialog/", "/productdialog"})
     public String renderDialogView(@RequestParam("id") final String id,
                                    @Nonnull final Model model) {
