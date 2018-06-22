@@ -119,8 +119,7 @@ public class ReplierService {
 
         if (messageContent.toLowerCase().trim().contains("sync")) {
             sync(conversationContext);
-        }
-        else {
+        } else {
             if (messageContent.toLowerCase().contains("hi ")) {
                 userService.getUser(userContext) // 1. get user.
                            .thenApply(UserDetail::getDisplayName)
