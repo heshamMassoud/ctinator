@@ -35,7 +35,7 @@ public class BotMentionController {
     public void mention(@RequestBody @Nonnull final MessageSent messageSent) {
 
         LOGGER.info("Got bot mention callback with text {}", messageSent.getMessage().getText());
-        replierService.mainMenuReply(messageSent);
+        //replierService.mainMenuReply(messageSent);
     }
 
 }
