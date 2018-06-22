@@ -20,7 +20,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionStage;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -118,7 +117,7 @@ public class ReplierService {
 
 
         if (messageContent.toLowerCase().trim().contains("sync")) {
-            sync(conversationContext).toCompletableFuture().join();
+            sync(conversationContext);
         }
 
 
@@ -141,12 +140,12 @@ public class ReplierService {
      * @param messageSent the original message sent to stride.
      */
     public void syncMsg(@Nonnull final MessageSent messageSent) {
-        sync(toConversationContext(messageSent)).toCompletableFuture().join();
+        sync(toConversationContext(messageSent));
     }
 
-    public CompletionStage<Void> sync(@Nonnull final ConversationContext conversationContext) {
-        return queryAll(sphereClient, buildCategoryQuery(), this::syncPage)
-            .thenAccept(ignoredResult -> processSyncResult(conversationContext));
+    public void sync(@Nonnull final ConversationContext conversationContext) {
+        queryAll(sphereClient, buildCategoryQuery(), this::syncPage).toCompletableFuture().join();
+        //processSyncResult(conversationContext);
     }
 
     private void processSyncResult(@Nonnull final ConversationContext conversationContext) {
