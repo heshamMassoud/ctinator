@@ -10,6 +10,7 @@ import com.commercetools.sync.categories.CategorySyncOptions;
 import com.commercetools.sync.categories.CategorySyncOptionsBuilder;
 import com.commercetools.sync.categories.helpers.CategorySyncStatistics;
 import com.heshammassoud.service.commercetools.ProductService;
+import com.heshammassoud.util.stride.MessageUtil;
 import io.sphere.sdk.categories.Category;
 import io.sphere.sdk.categories.CategoryDraft;
 import io.sphere.sdk.client.SphereClient;
@@ -119,17 +120,15 @@ public class ReplierService {
         if (messageContent.toLowerCase().trim().contains("sync")) {
             sync(conversationContext);
         }
-
-
-        if (messageContent.toLowerCase().contains("hi ")) {
-            userService.getUser(userContext) // 1. get user.
-                       .thenApply(UserDetail::getDisplayName)
-                       .thenApply(displayName -> mainMenu(
-                           format("Hi %s, hope you are having a great day! What can I do for you?",
-                               displayName))) // 2. build reply.
-                       .thenCompose(reply -> messageService.sendPrivately(userContext, reply)); // 3. send message.
-        } else {
-            messageService.send(conversationContext, getReply(messageContent, null));
+        else {
+            if (messageContent.toLowerCase().contains("hi ")) {
+                userService.getUser(userContext) // 1. get user.
+                           .thenApply(UserDetail::getDisplayName)
+                           .thenApply(MessageUtil::goodMessage) // 2. build reply.
+                           .thenCompose(reply -> messageService.sendPrivately(userContext, reply)); // 3. send message.
+            } else {
+                messageService.send(conversationContext, getReply(messageContent, null));
+            }
         }
     }
 

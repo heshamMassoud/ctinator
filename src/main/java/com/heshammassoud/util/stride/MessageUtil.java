@@ -220,6 +220,20 @@ public final class MessageUtil {
      * @return a built reference menu.
      */
     @Nonnull
+    public static Document goodMessage(@Nonnull final String username) {
+        return Document.create()
+                       .paragraph(p -> p.text("Good morning " + username + "!"))
+                       .info(p -> p
+                           .paragraph("You shop 'Coeur' has produced 3,823,329.26"
+                               + " EUR in revenue yesterday with 726 orders!"));
+    }
+
+    /**
+     * A reference menu to use stuff from.
+     *
+     * @return a built reference menu.
+     */
+    @Nonnull
     public static Document noIdea() {
         return Document.create()
                        .paragraph(p -> p
