@@ -17,20 +17,39 @@
 <body>
 <form action="/save-configuration" method="post" class="aui">
     <div class="ak-field-group">
-        <label for="projectKey">Project Key</label>
-        <input class="ak-field-text ak-field__size-medium" placeholder="Project Key" type="text" name="projectKey"
+        <label for="projectKey">Target Project Key</label>
+        <input class="ak-field-text ak-field__size-medium" placeholder="Target Project Key" type="text" name="projectKey"
                id="projectKey" value="${(ctProjectCredentials.projectKey)!}"
                required autofocus/>
     </div>
     <div class="ak-field-group">
-        <label for="clientId">Client Id</label>
-        <input class="ak-field-text ak-field__size-medium" placeholder="Client Id" type="text" name="clientId"
+        <label for="clientId">Target Client Id</label>
+        <input class="ak-field-text ak-field__size-medium" placeholder="Target Client Id" type="text" name="clientId"
                id="clientId" value="${(ctProjectCredentials.clientId)!}"
                required autofocus/>
     </div>
     <div class="ak-field-group">
-        <label for="clientSecret">Client Secret</label>
-        <input class="ak-field-text ak-field__size-medium" placeholder="Client Secret" type="text" name="clientSecret"
+        <label for="clientSecret">Target Client Secret</label>
+        <input class="ak-field-text ak-field__size-medium" placeholder="Target Client Secret" type="text" name="clientSecret"
+               id="clientSecret"
+               value="${(ctProjectCredentials.clientSecret)!}" required autofocus/>
+    </div>
+
+    <div class="ak-field-group">
+        <label for="projectKey">Source Project Key</label>
+        <input class="ak-field-text ak-field__size-medium" placeholder="Source Project Key" type="text" name="projectKey"
+               id="projectKey" value="${(ctProjectCredentials.projectKey)!}"
+               required autofocus/>
+    </div>
+    <div class="ak-field-group">
+        <label for="clientId">Source Client Id</label>
+        <input class="ak-field-text ak-field__size-medium" placeholder="Source Client Id" type="text" name="clientId"
+               id="clientId" value="${(ctProjectCredentials.clientId)!}"
+               required autofocus/>
+    </div>
+    <div class="ak-field-group">
+        <label for="clientSecret">Source Client Secret</label>
+        <input class="ak-field-text ak-field__size-medium" placeholder="Source Client Secret" type="text" name="clientSecret"
                id="clientSecret"
                value="${(ctProjectCredentials.clientSecret)!}" required autofocus/>
     </div>
