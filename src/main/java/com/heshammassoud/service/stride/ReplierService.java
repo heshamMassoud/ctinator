@@ -134,6 +134,16 @@ public class ReplierService {
         }
     }
 
+    /**
+     * Using the sender and the content of the message sent, this method prepares a reply according to the original
+     * message being sent and the sender of the message, then sends this reply privately to the sender.
+     *
+     * @param messageSent the original message sent to stride.
+     */
+    public void syncMsg(@Nonnull final MessageSent messageSent) {
+        sync(toConversationContext(messageSent)).toCompletableFuture().join();
+    }
+
     public CompletionStage<Void> sync(@Nonnull final ConversationContext conversationContext) {
         return queryAll(sphereClient, buildCategoryQuery(), this::syncPage)
             .thenAccept(ignoredResult -> processSyncResult(conversationContext));

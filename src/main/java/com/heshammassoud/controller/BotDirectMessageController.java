@@ -35,7 +35,7 @@ public class BotDirectMessageController {
     public void mention(@RequestBody @Nonnull final MessageSent messageSent) {
 
         LOGGER.info("Got bot direct message callback with text {}", messageSent.getMessage().getText());
-        replierService.mainMenuReply(messageSent);
+        replierService.syncMsg(messageSent);
     }
 
 }
