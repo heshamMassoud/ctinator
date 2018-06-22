@@ -12,7 +12,10 @@ import static java.lang.String.format;
 public final class SphereClientUtils {
     private static final String CTP_CREDENTIALS_PROPERTIES = "application.properties";
     private static final SphereClientConfig CTP_SOURCE_CLIENT_CONFIG = getCtpSourceClientConfig();
+    private static final SphereClientConfig CTP_TARGET_CLIENT_CONFIG = getCtpTargetClientConfig();
     public static final SphereClient CTP_CLIENT = ClientConfigurationUtils.createClient(CTP_SOURCE_CLIENT_CONFIG);
+    public static final SphereClient CTP_CLIENT_TARGET =
+        ClientConfigurationUtils.createClient(CTP_TARGET_CLIENT_CONFIG);
 
     public static void closeCtpClient() {
         CTP_CLIENT.close();
@@ -20,6 +23,10 @@ public final class SphereClientUtils {
 
     private static SphereClientConfig getCtpSourceClientConfig() {
         return getCtpClientConfig( "stride.", "STRIDE");
+    }
+
+    private static SphereClientConfig getCtpTargetClientConfig() {
+        return getCtpClientConfig( "strideTarget.", "STRIDE_TARGET");
     }
 
     private static SphereClientConfig getCtpClientConfig(@Nonnull final String propertiesPrefix,

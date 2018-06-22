@@ -9,6 +9,7 @@ ext{
     findbugsVersion = '3.0.1'
     strideBootVersion = '2.0.11'
     springBootVersion = '2.0.2.RELEASE'
+    commercetoolsSyncJava = 'v1.0.0-M11'
 }
 
 dependencies {
@@ -19,6 +20,7 @@ dependencies {
     implementation "com.commercetools.sdk.jvm.core:commercetools-models:${commercetoolsJvmSdkVersion}"
     implementation "com.commercetools.sdk.jvm.core:commercetools-java-client:${commercetoolsJvmSdkVersion}"
     implementation "com.commercetools.sdk.jvm.core:commercetools-convenience:${commercetoolsJvmSdkVersion}"
+    implementation "com.commercetools:commercetools-sync-java:${commercetoolsSyncJava}"
     implementation "com.google.code.findbugs:annotations:${findbugsVersion}"
     testImplementation "org.mockito:mockito-core:${mockitoVersion}"
     testImplementation "junit:junit:${jUnitVersion}"

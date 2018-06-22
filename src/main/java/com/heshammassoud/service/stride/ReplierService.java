@@ -5,15 +5,28 @@ import com.atlassian.stride.api.model.UserDetail;
 import com.atlassian.stride.model.context.ConversationContext;
 import com.atlassian.stride.model.context.UserContext;
 import com.atlassian.stride.model.webhooks.MessageSent;
+import com.commercetools.sync.categories.CategorySync;
+import com.commercetools.sync.categories.CategorySyncOptions;
+import com.commercetools.sync.categories.CategorySyncOptionsBuilder;
+import com.commercetools.sync.categories.helpers.CategorySyncStatistics;
 import com.heshammassoud.service.commercetools.ProductService;
+import io.sphere.sdk.categories.Category;
+import io.sphere.sdk.categories.CategoryDraft;
+import io.sphere.sdk.client.SphereClient;
 import io.sphere.sdk.products.Product;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.commercetools.sync.categories.utils.CategoryReferenceReplacementUtils.buildCategoryQuery;
+import static com.commercetools.sync.categories.utils.CategoryReferenceReplacementUtils.replaceCategoriesReferenceIdsWithKeys;
+import static com.commercetools.sync.commons.utils.CtpQueryUtils.queryAll;
 import static com.heshammassoud.util.stride.ContextUtil.toConversationContext;
 import static com.heshammassoud.util.stride.ContextUtil.toUserContext;
 import static com.heshammassoud.util.stride.MessageUtil.isViewWithUuid;
@@ -21,6 +34,7 @@ import static com.heshammassoud.util.stride.MessageUtil.mainMenu;
 import static com.heshammassoud.util.stride.MessageUtil.noIdea;
 import static com.heshammassoud.util.stride.MessageUtil.pdpDocument;
 import static com.heshammassoud.util.stride.MessageUtil.referenceDocument;
+import static com.heshammassoud.util.stride.MessageUtil.syncDocument;
 import static java.lang.String.format;
 
 @Service
@@ -29,6 +43,10 @@ public class ReplierService {
     private final UserService userService;
     private final MessageService messageService;
     private final ProductService productService;
+
+    private final SphereClient sphereClient;
+    private final SphereClient sphereTargetClient;
+    private final CategorySync categorySync;
 
     /**
      * Builds the bot's main menu with a custom header according to the user's initial message to the bot.
@@ -75,10 +93,16 @@ public class ReplierService {
     }
 
     public ReplierService(@Nonnull final UserService userService, @Nonnull final MessageService messageService,
-                          @Nonnull final ProductService productService) {
+                          @Nonnull final ProductService productService, @Nonnull final SphereClient sphereClient,
+                          @Nonnull final SphereClient sphereTargetClient) {
         this.userService = userService;
         this.messageService = messageService;
         this.productService = productService;
+        this.sphereClient = sphereClient;
+        this.sphereTargetClient = sphereTargetClient;
+        final CategorySyncOptions syncOptions = CategorySyncOptionsBuilder.of(sphereClient)
+                                                                          .build();
+        categorySync = new CategorySync(syncOptions);
     }
 
     /**
@@ -93,6 +117,11 @@ public class ReplierService {
         final UserContext userContext = toUserContext(messageSent);
 
 
+        if (messageContent.toLowerCase().trim().contains("sync")) {
+            sync(conversationContext).toCompletableFuture().join();
+        }
+
+
         if (messageContent.toLowerCase().contains("hi ")) {
             userService.getUser(userContext) // 1. get user.
                        .thenApply(UserDetail::getDisplayName)
@@ -103,8 +132,40 @@ public class ReplierService {
         } else {
             messageService.send(conversationContext, getReply(messageContent, null));
         }
+    }
 
+    public CompletionStage<Void> sync(@Nonnull final ConversationContext conversationContext) {
+        return queryAll(sphereClient, buildCategoryQuery(), this::syncPage)
+            .thenAccept(ignoredResult -> processSyncResult(conversationContext));
+    }
 
+    private void processSyncResult(@Nonnull final ConversationContext conversationContext) {
+        final CategorySyncStatistics statistics = categorySync.getStatistics();
+        final String syncDoneMessage = format("Syncing from CTP project '%s' to project '%s' is done.",
+            sphereClient.getConfig().getProjectKey(),
+            sphereTargetClient.getConfig().getProjectKey());
+        messageService.send(conversationContext, syncDocument(syncDoneMessage, statistics.getReportMessage()));
+        closeCtpClients();
+    }
+
+    public void closeCtpClients() {
+        sphereClient.close();
+        sphereTargetClient.close();
+    }
+
+    /**
+     * Given a {@link List} representing a page of resources of type {@code T}, this method creates a
+     * {@link CompletableFuture} of each sync process on the given page as a batch.
+     */
+    @Nonnull
+    private CategorySyncStatistics syncPage(@Nonnull final List<Category> page) {
+        final List<CategoryDraft> draftsWithKeysInReferences = getDraftsFromPage(page);
+        return categorySync.sync(draftsWithKeysInReferences).toCompletableFuture().join();
+    }
+
+    @Nonnull
+    private List<CategoryDraft> getDraftsFromPage(@Nonnull final List<Category> page) {
+        return replaceCategoriesReferenceIdsWithKeys(page);
     }
 
 }

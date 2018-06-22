@@ -50,6 +50,20 @@ public final class MessageUtil {
                            .text(productName, actionMark));
     }
 
+    /**
+     * Builds a pdp for the given product.
+     *
+     * @param message the product to display a pdp for.
+     * @param stats the stats to display a pdp for.
+     * @return the PDP as a Stride document object.
+     */
+    public static Document syncDocument(@Nonnull final String message, @Nonnull final String stats) {
+
+        return Document.create()
+                       .paragraph(p -> p.text(message))
+                       .code(Language.javascript, stats);
+    }
+
 
 
     /**

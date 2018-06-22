@@ -31,15 +31,24 @@ public class DialogController {
 
         final String id = "195e1c96-c840-4f92-85c8-5f15f62067f8";
         final Product product = productService.getProductById(id).join();
-        model.addAttribute("productName", product.getMasterData().getCurrent().getName().get(ENGLISH));
+
+        final String productName = product.getMasterData().getCurrent().getName().get(ENGLISH);
+        final String description = product.getMasterData().getCurrent().getDescription().get(ENGLISH);
+        final String masterVariantSku = product.getMasterData().getCurrent().getMasterVariant().getSku();
+        final String varian2 = product.getMasterData().getCurrent().getVariant(2).getSku();
+        final String varian3 = product.getMasterData().getCurrent().getVariant(3).getSku();
+
+
+        model.addAttribute("productName", productName);
         model.addAttribute("mcUrl",
             "https://admin.commercetools.com/java-sync-target-dev2/products/" + id);
         model.addAttribute("playgroundUrl",
             "https://impex.commercetools.com/playground?endpoint=products&method=read-id&resourceId="
                 + id);
-        model.addAttribute("desc", "Full LED headlights produce light at 5,500 Kelvin, that's"
-            + " roughly the same as daylight. This could help your eyes perceive more contrast. They experience less "
-            + "strain. And those dark stretches of road become a little less daunting.");
+        model.addAttribute("desc", description);
+        model.addAttribute("mv", masterVariantSku);
+        model.addAttribute("v2", varian2);
+        model.addAttribute("v3", varian3);
         return "productdialog";
     }
 

@@ -14,4 +14,9 @@ public class SpringConfiguration {
     public SphereClient sphereClient() {
         return SphereClientUtils.CTP_CLIENT;
     }
+
+    @Bean
+    public SphereClient sphereTargetClient() {
+        return SphereClientUtils.CTP_CLIENT_TARGET;
+    }
 }
