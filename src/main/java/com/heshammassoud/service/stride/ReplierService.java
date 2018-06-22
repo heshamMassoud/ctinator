@@ -14,6 +14,7 @@ import io.sphere.sdk.categories.Category;
 import io.sphere.sdk.categories.CategoryDraft;
 import io.sphere.sdk.client.SphereClient;
 import io.sphere.sdk.products.Product;
+import io.sphere.sdk.queries.QueryExecutionUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Nonnull;
@@ -25,7 +26,6 @@ import java.util.regex.Pattern;
 
 import static com.commercetools.sync.categories.utils.CategoryReferenceReplacementUtils.buildCategoryQuery;
 import static com.commercetools.sync.categories.utils.CategoryReferenceReplacementUtils.replaceCategoriesReferenceIdsWithKeys;
-import static com.commercetools.sync.commons.utils.CtpQueryUtils.queryAll;
 import static com.heshammassoud.util.stride.ContextUtil.toConversationContext;
 import static com.heshammassoud.util.stride.ContextUtil.toUserContext;
 import static com.heshammassoud.util.stride.MessageUtil.isViewWithUuid;
@@ -99,7 +99,7 @@ public class ReplierService {
         this.productService = productService;
         this.sphereClient = sphereClient;
         this.sphereTargetClient = sphereTargetClient;
-        final CategorySyncOptions syncOptions = CategorySyncOptionsBuilder.of(sphereClient)
+        final CategorySyncOptions syncOptions = CategorySyncOptionsBuilder.of(sphereTargetClient)
                                                                           .build();
         categorySync = new CategorySync(syncOptions);
     }
@@ -143,9 +143,17 @@ public class ReplierService {
         sync(toConversationContext(messageSent));
     }
 
+    /**
+     * Using the sender and the content of the message sent, this method prepares a reply according to the original
+     * message being sent and the sender of the message, then sends this reply privately to the sender.
+     *
+     * @param conversationContext the original message sent to stride.
+     */
     public void sync(@Nonnull final ConversationContext conversationContext) {
-        queryAll(sphereClient, buildCategoryQuery(), this::syncPage).toCompletableFuture().join();
-        //processSyncResult(conversationContext);
+        final List<Category> categories = QueryExecutionUtils.queryAll(sphereClient, buildCategoryQuery())
+                                                             .toCompletableFuture().join();
+        syncPage(categories);
+        processSyncResult(conversationContext);
     }
 
     private void processSyncResult(@Nonnull final ConversationContext conversationContext) {
