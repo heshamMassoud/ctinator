@@ -25,6 +25,17 @@ can connect to for sending messages back and forth between Stride and the server
 |Hi @ctinator| The bot will respond with a good morning greeting containing stats summary of the set commercetools project with STRIDE_PROJECT_KEY|
 |Asking it to show/view/display product with id| ctinator will respond with dialog containing the commercetools product info and a link its location on the MC and the playground.|
 |Saying anything that contains sync| Would sync all the categories from the STRIDE_PROJECT_KEY to STRIDE_TARGET_PROJECT_KEY|
+#### Query a Product
+![screen shot 2018-06-26 at 09 43 13](https://user-images.githubusercontent.com/9512131/41896662-7b3860a4-7925-11e8-923d-576a89ced007.png)
+#### View a Product
+![screen shot 2018-06-26 at 09 42 37](https://user-images.githubusercontent.com/9512131/41896664-7c4710f8-7925-11e8-9a24-c66647efc0f9.png)
+#### Sync commercetools categories
+![screen shot 2018-06-26 at 09 37 22](https://user-images.githubusercontent.com/9512131/41896666-7d687efe-7925-11e8-86e1-189805c44dc9.png)
+
+
+
+
+
 
 ### Development
 
